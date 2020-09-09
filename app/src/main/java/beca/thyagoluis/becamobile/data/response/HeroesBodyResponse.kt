@@ -6,5 +6,5 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class HeroesBodyResponse(
     @Json(name = "results")
-    val bookResults: List<HeroesResultsResponse>
+    val heroResult: List<HeroesResultsResponse>
 )
