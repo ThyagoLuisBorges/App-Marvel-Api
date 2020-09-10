@@ -1,17 +1,22 @@
 package beca.thyagoluis.becamobile.data
 
+import android.util.Log
+import androidx.annotation.Nullable
 import beca.thyagoluis.becamobile.data.response.HeroesBodyResponse
+import beca.thyagoluis.becamobile.data.util.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
+import java.security.NoSuchAlgorithmException
+import java.util.*
 
 interface MarvelServices {
 
     @GET("characters")
     fun getHeroes(
-        @Query("ts") ts: String = "231908329018",
-        @Query("apikey") apiKey: String = "53f4971cfa095301fbad2115de9ca7b5",
-        @Query("hash") hash: String = "f84e91792e91844eb5faaf8a6271d637",
+        @Query("ts") ts: String = TS,
+        @Query("apikey") apiKey: String = PUBLIC_KEY,
+        @Query("hash") hash: String = HASH.md5()
     ): Call<HeroesBodyResponse>
 
 }
