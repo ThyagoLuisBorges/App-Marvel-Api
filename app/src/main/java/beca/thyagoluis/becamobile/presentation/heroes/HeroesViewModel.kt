@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import beca.thyagoluis.becamobile.data.ApiService
 import beca.thyagoluis.becamobile.data.model.Hero
 import beca.thyagoluis.becamobile.data.response.HeroesBodyResponse
+import beca.thyagoluis.becamobile.data.response.HeroesResultsResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,11 +24,11 @@ class HeroesViewModel : ViewModel() {
                     val heroes: MutableList<Hero> = mutableListOf()
 
                     response.body()?.let { heroBodyResponse ->
-                        for (result in heroBodyResponse.heroResult) {
+                        for (result in heroBodyResponse.data.results) {
                             val hero = Hero(
                                 name = result.name,
                                 description = result.description,
-                                thumbnail = result.thumbnail.path + "/standard_amazing" + result.thumbnail.extension
+                                thumbnail = result.thumbnail.path + "/standard_amazing." + result.thumbnail.extension
                             )
 
                             heroes.add(hero)
