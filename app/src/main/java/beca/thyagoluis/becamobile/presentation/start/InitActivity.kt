@@ -26,6 +26,6 @@ class InitActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-        worker.schedule(runnable, 5, TimeUnit.SECONDS)
+        worker.schedule(runnable, 3, TimeUnit.SECONDS)
     }
 }
