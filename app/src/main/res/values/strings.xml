@@ -2,4 +2,5 @@
     <string name="app_name">becamobile</string>
     <string name="toolbar_title">Marvel Heroes</string>
     <string name="hero_avatar_description">Hero Avatar</string>
+    <string name="search_title">searchButton</string>
 </resources>
