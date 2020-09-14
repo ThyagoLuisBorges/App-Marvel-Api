@@ -3,8 +3,12 @@ package beca.thyagoluis.becamobile.presentation.heroes
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
+import android.view.Menu
 import android.view.View
+import android.widget.SearchView
 import androidx.core.view.isGone
+import androidx.core.view.isNotEmpty
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +28,15 @@ class HeroesActivity : AppCompatActivity() {
 
         progressBar.visibility = View.VISIBLE
 
+        refreshLayout.setOnRefreshListener {
+            fetchHeroes()
+        }
+
+        fetchHeroes()
+
+    }
+
+    private fun fetchHeroes(){
         val viewModel: HeroesViewModel = ViewModelProviders.of(this).get(HeroesViewModel::class.java)
 
         viewModel.heroesLiveData.observe(this, Observer {
@@ -31,13 +44,44 @@ class HeroesActivity : AppCompatActivity() {
                 with(recyclerHeroes) {
                     layoutManager = LinearLayoutManager(this@HeroesActivity, RecyclerView.VERTICAL, false)
                     setHasFixedSize(true)
-                    adapter = HeroesAdapter(heroes)
+                    adapter = HeroesAdapter(heroes) { hero ->
+                        val intent = HeroesDetailsActivity.getStartIntent(this@HeroesActivity, hero.name, hero.description, hero.thumbnail)
+                        this@HeroesActivity.startActivity(intent)
+                    }
                     progressBar.visibility = View.GONE
                 }
             }
         })
 
-        viewModel.getHeroes()
+        refreshLayout.isRefreshing = false
 
+        viewModel.getHeroes()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        menuInflater.inflate(R.menu.main, menu)
+        val searchItem = menu?.findItem(R.id.search)
+
+        val viewModel: HeroesViewModel = ViewModelProviders.of(this).get(HeroesViewModel::class.java)
+
+        if(searchItem != null) {
+            val searchView = searchItem.actionView as SearchView
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(hero: String?): Boolean {
+                    if(!hero.isNullOrEmpty()) {
+                        viewModel.getHero(hero)
+                    }
+                    return true
+                }
+
+                override fun onQueryTextChange(hero: String?): Boolean {
+                    return true
+                }
+
+            })
+        }
+
+        return super.onCreateOptionsMenu(menu)
     }
 }
