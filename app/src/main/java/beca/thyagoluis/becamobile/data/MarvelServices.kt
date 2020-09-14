@@ -14,6 +14,15 @@ interface MarvelServices {
 
     @GET("characters")
     fun getHeroes(
+        @Query("limit") limit: String = "100",
+        @Query("ts") ts: String = TS,
+        @Query("apikey") apiKey: String = PUBLIC_KEY,
+        @Query("hash") hash: String = HASH.md5()
+    ): Call<HeroesBodyResponse>
+
+    @GET("characters")
+    fun getHero(
+        @Query("nameStartsWith") name: String,
         @Query("ts") ts: String = TS,
         @Query("apikey") apiKey: String = PUBLIC_KEY,
         @Query("hash") hash: String = HASH.md5()
