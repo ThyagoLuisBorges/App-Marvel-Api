@@ -55,7 +55,7 @@ class HeroesActivity : AppCompatActivity() {
 
         refreshLayout.isRefreshing = false
 
-        viewModel.getHeroes()
+        viewModel.getHeroes(applicationContext)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -70,7 +70,7 @@ class HeroesActivity : AppCompatActivity() {
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
                 override fun onQueryTextSubmit(hero: String?): Boolean {
                     if(!hero.isNullOrEmpty()) {
-                        viewModel.getHero(hero)
+                        viewModel.getHero(hero, applicationContext)
                     }
                     return true
                 }

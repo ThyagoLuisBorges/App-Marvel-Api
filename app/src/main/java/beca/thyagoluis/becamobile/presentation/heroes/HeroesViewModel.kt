@@ -1,5 +1,7 @@
 package beca.thyagoluis.becamobile.presentation.heroes
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import beca.thyagoluis.becamobile.data.ApiService
@@ -14,7 +16,7 @@ class HeroesViewModel : ViewModel() {
 
     val heroesLiveData: MutableLiveData<List<Hero>> = MutableLiveData()
 
-    fun getHeroes() {
+    fun getHeroes(context: Context) {
         ApiService.service.getHeroes().enqueue(object : Callback<HeroesBodyResponse> {
             override fun onResponse(
                 call: Call<HeroesBodyResponse>,
@@ -36,16 +38,19 @@ class HeroesViewModel : ViewModel() {
                     }
 
                     heroesLiveData.value = heroes
+                } else {
+                    Toast.makeText(context, "Erro ao buscar api", Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<HeroesBodyResponse>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_LONG).show()
             }
 
         })
     }
 
-    fun getHero(heroName: String){
+    fun getHero(heroName: String, context: Context){
         ApiService.service.getHero(heroName).enqueue(object : Callback<HeroesBodyResponse> {
             override fun onResponse(
                 call: Call<HeroesBodyResponse>,
@@ -67,10 +72,13 @@ class HeroesViewModel : ViewModel() {
                     }
 
                     heroesLiveData.value = heroes
+                } else {
+                    Toast.makeText(context, "Erro ao buscar api", Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<HeroesBodyResponse>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_LONG).show()
             }
 
         })
